@@ -1,0 +1,17 @@
+-- Q: Show all books with book name, description and author name.
+SELECT book_name, book_info, author_name FROM books, authors WHERE authors.id=book.ref_author_id;
+
+-- Q: Show author name which has no book in the library.
+SELECT * FROM authors WHERE id NOT IN (SELECT books.author_id FROM books);
+
+-- Q: Show reader name, book name and reader phone number who has not return books for 7 days.
+SELECT rents.id, reader_name, reader_phone, book_name, rent_date, return_date 
+	FROM rents, readers, books 
+    WHERE 
+		rents.is_return=0
+        AND
+		rents.reader_id=readers.id
+        AND
+        rents.book_id=books.id
+        AND
+    DATEDIFF('2018-02-10', rents.return_date) > 7;
