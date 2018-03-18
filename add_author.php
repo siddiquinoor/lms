@@ -3,7 +3,7 @@
   {
     // connecting to the database
     $conn = mysqli_connect("localhost", "root", "", "lms");
-    mysqli_query("INSERT INTO authors SET author_name='$author_name', author_bio='$author_bio'", $conn);
+    mysqli_query( $conn, "INSERT INTO authors SET author_name='$author_name', author_bio='$author_bio'");
     header("Loction: new_author.php?msg=Author added!");
   }
   else
