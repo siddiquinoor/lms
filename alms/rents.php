@@ -3,10 +3,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width-device-width, inital-scale=1">
     <head>
-        <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <script src="js/jquery-1.11.2.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
         
     </head>
 
@@ -68,45 +68,49 @@
 			  </tr>
 			</thead>
 			<tbody>
-			  <tr>
-				<td>1</td>
-				<td>Doe</td>
-				<td>Example</td>
-				<td>Example</td>
-				<td>Example</td>
-				<td>Example</td>
-			  </tr>
+				
+				<?php
+					$conn = mysqli_connect("localhost", "root", "", "lms") or die("Failed to connect to database!");
+					$sql = "SELECT 
+							readers.reader_name, books.book_name, rents.rent_date, rents.return_date, rents.is_return 
+							FROM rents, readers, books
+							WHERE rents.reader_id=readers.id AND rents.book_id=books.id
+							ORDER BY rents.id DESC";
+					
+					$rst = mysqli_query($conn, $sql);
+					
+					if($rst)
+					{
+						$cnt = 1;
+						
+						while($row = mysqli_fetch_assoc($rst))
+						{
+							$is_return = $row['is_return'];
+							
+							if($is_return)
+								$return = "YES";
+							else
+								$return = "NO";
+							
+							echo '<tr>';
+							echo '	<td>'.$cnt.'</td>';
+							echo '	<td>'.$row['reader_name'].'</td>';
+							echo '	<td>'.$row['book_name'].'</td>';
+							echo '	<td>'.$row['rent_date'].'</td>';
+							echo '	<td>'.$row['return_date'].'</td>';
+							echo '	<td>'.$return.'</td>';
+							echo '  </tr>';
+							
+							$cnt++;
+						}
+					}
+				?>
+			
+			  
+			  
+			  
 			</tbody>
 		  </table>
-
-		<form class="form-horizontal" action="/action_page.php">
-		  <div class="form-group">
-			<label class="control-label col-sm-2" for="email">Email:</label>
-			<div class="col-sm-10">
-			  <input type="email" class="form-control" id="email" placeholder="Enter email">
-			</div>
-		  </div>
-		  <div class="form-group">
-			<label class="control-label col-sm-2" for="pwd">Password:</label>
-			<div class="col-sm-10"> 
-			  <input type="password" class="form-control" id="pwd" placeholder="Enter password">
-			</div>
-		  </div>
-		  <div class="form-group">
-			<label class="control-label col-sm-2" for="pwd">Password:</label>
-			<div class="col-sm-10"> 
-			  <select class="form-control">
-				  <option>Default select</option>
-				</select>
-			</div>
-		  </div>
-		  <div class="form-group"> 
-			<div class="col-sm-offset-2 col-sm-10">
-			  <button type="reset" class="btn btn-default">Reset</button>
-			  <button type="submit" class="btn btn-primary">Submit</button>
-			</div>
-		  </div>
-		</form>
       </section>
     </body>
 </html>

@@ -3,10 +3,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width-device-width, inital-scale=1">
     <head>
-        <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <script src="js/jquery-1.11.2.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
         
     </head>
 
@@ -54,16 +54,32 @@
 
       <section class="container">
 		
-		  <h2>Rent <small class="pull-right"><a href="#" class="btn btn-info" role="button">Add Rent</a></small></h2>
-<hr>		  
+		  <h2>Rent <small class="pull-right"><a href="rents.php" class="btn btn-info" role="button">Rent List</a></small></h2>
+			<hr>		  
 		  
-		<form class="form-horizontal" action="/action_page.php">
+		<form class="form-horizontal" action="action.php" method="post">
 		  
 		  <div class="form-group">
 			<label class="control-label col-sm-2" for="pwd">Reader Name</label>
 			<div class="col-sm-10"> 
-			  <select class="form-control">
-				  <option>Select Reader</option>
+				<select class="form-control" name="reader_id">
+				  <option value="0">Select Reader</option>
+				  
+				  <?php
+					$conn = mysqli_connect("localhost", "root", "", "lms");
+					$sql = "SELECT * FROM readers";
+					
+					$rst = mysqli_query($conn, $sql);
+					
+					if($rst)
+					{
+						while($row = mysqli_fetch_assoc($rst))
+						{
+							echo '<option value="'.$row['id'].'">'.$row['reader_name'].'</option>';
+						}
+					}
+				  ?>
+				  
 				</select>
 			</div>
 		  </div>
@@ -71,23 +87,40 @@
 		  <div class="form-group">
 			<label class="control-label col-sm-2" for="pwd">Book Name</label>
 			<div class="col-sm-10"> 
-			  <select class="form-control">
-				  <option>Select Book</option>
+			  <select class="form-control" name="book_id">
+			  
+				  <option value="0">Select Book</option>
+				  
+				  <?php
+					$conn = mysqli_connect("localhost", "root", "", "lms");
+					$sql = "SELECT * FROM books";
+					
+					$rst = mysqli_query($conn, $sql);
+					
+					if($rst)
+					{
+						while($row = mysqli_fetch_assoc($rst))
+						{
+							echo '<option value="'.$row['id'].'">'.$row['book_name'].'</option>';
+						}
+					}
+				  ?>
+				  
 				</select>
 			</div>
 		  </div>
 		  
 		  <div class="form-group">
-			<label class="control-label col-sm-2" for="email">Rent Date</label>
+			<label class="control-label col-sm-2" for="rent_date">Rent Date</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="email" placeholder="Enter rent date">
+			  <input type="text" class="form-control" id="rent_date" name="rent_date" placeholder="e.g. 2018-03-25">
 			</div>
 		  </div>
 		  
 		  <div class="form-group">
-			<label class="control-label col-sm-2" for="email">Return Date</label>
+			<label class="control-label col-sm-2" for="return_date">Return Date</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="email" placeholder="Enter renturn date">
+			  <input type="text" class="form-control" id="return_date" name="return_date" placeholder="e.g. 2018-03-25">
 			</div>
 		  </div>
 		  
